@@ -1,10 +1,10 @@
-module("test01", package.seeall)
+module("${MODULE_NAME}", package.seeall)
 
 require("bit")
 require("flasher")
 require("parameters")
 
-CFG_strTestName = "SPI_FLASH_IDENTIFY"
+CFG_strTestName = "${TEST_NAME}"
 
 CFG_aParameterDefinitions = {
 	{
