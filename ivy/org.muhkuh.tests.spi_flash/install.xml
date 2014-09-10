@@ -3,11 +3,7 @@
 		<copy todir="${install.documentation}" includeEmptyDirs="true">
 			<fileset dir="doc" />
 		</copy>
-		<copy todir="${install.firmware}" includeEmptyDirs="true">
-			<fileset dir="netx" />
-		</copy>
-		<copy todir="${install.lua}" includeEmptyDirs="true">
-			<fileset dir="lua" />
-		</copy>
+		
+		<!-- TODO: replace the module and test name and install the test.lua script. -->
 	</target>
 </project>
