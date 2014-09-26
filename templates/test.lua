@@ -1,10 +1,10 @@
-module("${MODULE_NAME}", package.seeall)
+module("@MODULE_NAME@", package.seeall)
 
 require("bit")
 require("flasher")
 require("parameters")
 
-CFG_strTestName = "${TEST_NAME}"
+CFG_strTestName = "@TEST_NAME@"
 
 CFG_aParameterDefinitions = {
 	{
