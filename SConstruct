@@ -67,21 +67,32 @@ doc = env_default.Asciidoc('targets/doc/org.muhkuh.tests.spi_flash.html', 'READM
 # Build the artifact.
 #
 
-tArcList = env_default.ArchiveList('zip')
+aArtifactServer = ('nexus@netx01', 'muhkuh', 'muhkuh_snapshots')
+strArtifactGroup = 'tests.muhkuh.org'
+strArtifactId = 'spi_flash'
 
-tArcList.AddFiles('',
+
+tArcList0 = env_default.ArchiveList('zip')
+
+tArcList0.AddFiles('',
 	'ivy/org.muhkuh.tests.spi_flash/install.xml')
 
-tArcList.AddFiles('doc/',
+tArcList0.AddFiles('doc/',
 	doc)
 
-tArcList.AddFiles('templates/',
+tArcList0.AddFiles('templates/',
 	'templates/test.lua')
 
 
-strArtifactPath = 'targets/ivy/repository/org/muhkuh/tests/spi_flash/%s' % env_default.ArtifactVersion_Get()
-tArc = env_default.Archive(os.path.join(strArtifactPath, 'spi_flash-%s.zip' % env_default.ArtifactVersion_Get()), None, ARCHIVE_CONTENTS=tArcList)
+aArtifactGroupReverse = strArtifactGroup.split('.')
+aArtifactGroupReverse.reverse()
 
+strArtifactPath = 'targets/ivy/repository/%s/%s/%s' % ('/'.join(aArtifactGroupReverse),strArtifactId,PROJECT_VERSION)
+tArc0 = env_default.Archive(os.path.join(strArtifactPath, '%s-%s.zip' % (strArtifactId,PROJECT_VERSION)), None, ARCHIVE_CONTENTS=tArcList0)
+tIvy0 = env_default.ArtifactVersion(os.path.join(strArtifactPath, 'ivy-%s.xml' % PROJECT_VERSION), 'ivy/%s.%s/ivy.xml' % ('.'.join(aArtifactGroupReverse),strArtifactId))
 
-env_default.ArtifactVersion(os.path.join(strArtifactPath, 'ivy-%s.xml' % env_default.ArtifactVersion_Get()), 'ivy/org.muhkuh.tests.spi_flash/ivy.xml')
+env_default.AddArtifact(tArc0, aArtifactServer, strArtifactGroup, strArtifactId, PROJECT_VERSION, 'zip')
+env_default.AddArtifact(tIvy0, aArtifactServer, strArtifactGroup, strArtifactId, PROJECT_VERSION, 'ivy')
+
+tArtifacts = env_default.Artifact('targets/artifacts.xml', None)
 
