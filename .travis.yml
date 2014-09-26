@@ -1,0 +1,18 @@
+language: python
+python:
+  - "2.7"
+
+
+env:
+  - secure: "iPa3bfdx4nTfzbAMxM5qYswdw24xT42gDrx8vxNOX7VpJWTMyxFED2QD9jAga/bAGvYTt8LZfIJahj4UAQv9fR9EwjeKPfjD6eEgt784LVI7MEQc89X0uHaz6jtgWxtnqTUGZ1MTeIVak9HRBZpIiM0ABT2XJZmtPmVUOB5QTY4="
+
+
+install:
+  - pip install -q requests
+
+
+# This is the command to build the whole project and pack the results in a distributable form.
+script:
+  - python mbs/mbs
+  - python ivy/deploy.py targets/artifacts.xml
+
