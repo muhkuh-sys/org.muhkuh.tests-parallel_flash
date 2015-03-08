@@ -1,10 +1,10 @@
 language: python
 python:
-  - "2.7"
+  - '2.7'
 
 
 env:
-  - secure: "iPa3bfdx4nTfzbAMxM5qYswdw24xT42gDrx8vxNOX7VpJWTMyxFED2QD9jAga/bAGvYTt8LZfIJahj4UAQv9fR9EwjeKPfjD6eEgt784LVI7MEQc89X0uHaz6jtgWxtnqTUGZ1MTeIVak9HRBZpIiM0ABT2XJZmtPmVUOB5QTY4="
+  - secure: iPa3bfdx4nTfzbAMxM5qYswdw24xT42gDrx8vxNOX7VpJWTMyxFED2QD9jAga/bAGvYTt8LZfIJahj4UAQv9fR9EwjeKPfjD6eEgt784LVI7MEQc89X0uHaz6jtgWxtnqTUGZ1MTeIVak9HRBZpIiM0ABT2XJZmtPmVUOB5QTY4=
 
 
 install:
@@ -16,3 +16,15 @@ script:
   - python mbs/mbs
   - python ivy/deploy.py targets/artifacts.xml
 
+
+deploy:
+  provider: releases
+  api_key:
+    secure: GzyVx1ziywdrO8e6Q8I1djHxJoIVer8mdJbJT5EL6vOfMVAMi/O1C/1yav6QCgs2kmzzqKhF5S4+EO/Nkmv5SCtwfOyTu1Zm4+yktsWVxXcriXvr2ihR8e5yp58fvgIeox9c4UxR/IktYL3vRXpBIXNLBCXy2UkrylCAI4rFm3Q=
+  file:
+    - targets/ivy/spi_flash.zip
+    - targets/ivy/ivy.xml
+  skip_cleanup: true
+  on:
+    repo: muhkuh-sys/org.muhkuh.tests-spi_flash
+    tags: true
