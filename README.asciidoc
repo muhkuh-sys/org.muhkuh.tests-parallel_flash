@@ -1,5 +1,5 @@
-Test case "spi_flash_identify"
-==============================
+Test case "parallel_flash_identify"
+===================================
 Christoph Thelen <cthelen@hilscher.com>
 :Author Initials: CT
 
@@ -7,7 +7,7 @@ Christoph Thelen <cthelen@hilscher.com>
 [[About, About]]
 == About
 
-This document describes the "SPI Flash identify" test for the Muhkuh test framework. It identifies a connected SPI flash with the "flasher" tool. During this test all SPI lines of a standard 1 bit connection are used. The chapter <<Test_description>> discusses this method in detail.
+This document describes the "Parallel Flash identify" test for the Muhkuh test framework. It identifies a connected parallel NOR flash with the "flasher" tool. The chapter <<Test_description>> discusses this method in detail.
 
 This test does not check extra lines of a 4 bit connection. Please see the "sqi_xip_test" for this purpose.
 
@@ -15,23 +15,10 @@ This test does not check extra lines of a 4 bit connection. Please see the "sqi_
 [[Test_description,Test description]]
 == Test description
 
-The test uses the flasher tool to identify the SPI flash. The flasher is an open source project. It is hosted on GitHub: https://github.com/muhkuh-sys/flasher .
-The complete source code can be found in the public Git repository: https://github.com/muhkuh-sys/flasher.git
+The test uses the flasher tool to identify the parallel NOR flash. The flasher is an open source project. It is hosted on GitHub: https://github.com/muhkuh-sys/org.muhkuh.tools-flasher .
+The complete source code can be found in the public Git repository: https://github.com/muhkuh-sys/org.muhkuh.tools-flasher.git
 
-The flasher detects SPI flashes in 2 steps: first it tries a built-in list of known devices. Every entry in the list has a description how the flash can be identified in a hopefully unambiguous way. If no entry in this list matches, the SFDP protocol is used. SFDP is a JEDEC standard (JESD216A) and provides all kind information about the flash: the capacity, the maximum clock frequency, command bytes for common operations and information about multiline capabilities of the device (2bit or 4bit modes).
-
-The flasher connects an identified device with an ASCII ID. This ID is either defined in the built-in list or is set to +"SFDP"+ for all devices identified with this protocol. The reason for this general SFDP ID is the lack of an ASCII identifier in the SFDP information. At the time of writing SFDP V1.1 is the most recent version of the specification. Maybe later revisions will provide an ASCII ID.
-
-During the identification process the netX sends several commands to the flash device and receives the response. All lines needed for 1 bit communication are included in this process:
-
-* +CS+ (Chip select)
-* +CLK+ (Clock)
-* +MOSI+ (Master out, slave in)
-* +MISO+ (Master in, slave out)
-
-Signals not included in this test are special lines like "Reset", "Hold", "Write protect" or any lines used for multi-I/O communication like "SIO2" and "SIO3".
-
-The default speed for the communication with the SPI flash is 1MHz. To match the target operation conditions this can be modified with the +speed_khz+ parameter.
+The flasher detects parallel NOR flashes with the "Common Flash Memory Interface" (short CFI). CFI is a JEDEC standard: http://www.jedec.org/standards-documents/docs/jesd-6801/
 
 The test can optionally write a file to the flash after a successful identify. The offset in the flash array can be selected.
 
@@ -43,18 +30,6 @@ The test can optionally write a file to the flash after a successful identify. T
   Specify the index of the SPI unit where the SPI flash is connected. Please see the chapter <<Unit_and_Chip_select>> for details.
 +chipselect+::
   Specify the index of the chip select where the SPI flash is connected. Please see the chapter <<Unit_and_Chip_select>> for details.
-+speed_khz+::
-  Run the communication with the SPI flash at another sped than 1MHz. The value is specified in kHz, i.e. 10000 means 10MHz.
-+id+::
-  The expected ID of the flash. Please see the chapter <<Flash_ID>> for details.
-+mmio_csn+::
-  Only needed for MMIO connections: the index of the MMIO pin connected to the chip select signal of the flash. Please see the chapter <<Unit_and_Chip_select>> for details.
-+mmio_clk+::
-  Only needed for MMIO connections: the index of the MMIO pin connected to the clock signal of the flash. Please see the chapter <<Unit_and_Chip_select>> for details.
-+mmio_mosi+::
-  Only needed for MMIO connections: the index of the MMIO pin connected to the MOSI signal of the flash. Please see the chapter <<Unit_and_Chip_select>> for details.
-+mmio_miso+::
-  Only needed for MMIO connections: the index of the MMIO pin connected to the MISO signal of the flash. Please see the chapter <<Unit_and_Chip_select>> for details.
 +data_file+::
   The path to the file which should be flashed after a successful identify.
 +offset+::
@@ -63,105 +38,4 @@ The test can optionally write a file to the flash after a successful identify. T
 [[Unit_and_Chip_select, Unit and chip select]]
 === Unit and chip select
 
-The unit and chip select parameters specify the pins the SPI flash is connected to. The unit specifies the internal SPI controller. Some netX chips have more than 1.
-
-The following table shows the available units and chip select lines on the different netX controllers.
-
-.Available units and chip selects on the different netX types.
-netx500::
-  * unit +0+: SPI
-  ** chipselect +0+, +1+, +2+
-netx100::
-  * unit +0+: SPI
-  ** chipselect +0+, +1+, +2+
-netx52::
-  * unit +0+: SQI
-  ** chipselect +0+, +1+, +2+
-  * unit +1+: SPI motion
-  ** chipselect +0+, +1+, +2+
-netx51::
-  * unit +0+: SQI
-  ** chipselect +0+, +1+, +2+
-  * unit +1+: SPI motion
-  ** chipselect +0+, +1+, +2+
-netx50::
-  * unit +0+: SPI0
-  ** chipselect +0+, +1+, +2+
-  * unit +1+: SPI1
-  ** chipselect +0+, +1+, +2+
-netx10::
-  * unit +0+: SQI
-  ** chipselect +0+, +1+, +2+
-  * unit +1+: SPI motion
-  ** chipselect +0+, +1+, +2+
-
-
-Depending on the netX controller type, the unit and the chip select, the flash must be connected to a specific set of signals. The following table shows the signals by their name.
-The name corresponds to the netX pinning specified by Hilscher.
-
-The special value of 'MMIO' for a signal name means that the signal is only available on the MMIO multiplex matrix. The matrix can be configured by software. This means that the according signal can be routed to any MMIO pin. The index of the MMIO pin must be specified as a parameter.
-
-[cols=">,>m,>m,>,>,>,>",options="header"]
-|==========================
-|           netX| unit| chip select|          CS|        CLK|        MOSI|        MISO
-.3+| netX500 .3+|    0|           0|  +SPI_CS0N+|  +SPI_CLK+|  +SPI_MOSI+|  +SPI_MISO+
-                      |           1|  +SPI_CS1N+|  +SPI_CLK+|  +SPI_MOSI+|  +SPI_MISO+
-                      |           2|  +SPI_CS2N+|  +SPI_CLK+|  +SPI_MOSI+|  +SPI_MISO+
-.3+| netX100 .3+|    0|           0|  +SPI_CS0N+|  +SPI_CLK+|  +SPI_MOSI+|  +SPI_MISO+
-                      |           1|  +SPI_CS1N+|  +SPI_CLK+|  +SPI_MOSI+|  +SPI_MISO+
-                      |           2|  +SPI_CS2N+|  +SPI_CLK+|  +SPI_MOSI+|  +SPI_MISO+
-.6+|  netX52 .3+|    0|           0| +SPI0_CS0N+| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-                      |           1|      'MMIO'| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-                      |           2|      'MMIO'| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-             .3+|    1|           0|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-                      |           1|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-                      |           2|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-.6+|  netX51 .3+|    0|           0| +SPI0_CS0N+| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-                      |           1| +SPI0_CS1N+| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-                      |           2|      'MMIO'| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-             .3+|    1|           0|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-                      |           1|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-                      |           2|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-.6+|  netX50 .3+|    0|           0| +SPI0_CS0N+| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-                      |           1| +SPI0_CS1N+| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-                      |           2|      'MMIO'| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-             .3+|    1|           0|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-                      |           1|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-                      |           2|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-.6+|  netX10 .3+|    0|           0| +SPI0_CS0N+| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-                      |           1|      'MMIO'| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-                      |           2|      'MMIO'| +SPI0_CLK+| +SPI0_MOSI+| +SPI0_MISO+
-             .3+|    1|           0|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-                      |           1|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-                      |           2|      'MMIO'|     'MMIO'|      'MMIO'|      'MMIO'
-|==========================
-
-
-[[Flash_ID, Flash ID]]
-=== Flash ID
-
-The parameter +id+ specifies the expected ID of the flash. The ID is defined by the flasher tool.
-All flashes which are identified by the built-in list return the +name+ attribute of the list entry as the ID.
-Flashes which are identified by SFDP return +"SFDP"+ as their ID.
-
-The built-in list is available through the repository browser at GitHub:
-https://github.com/muhkuh-sys/flasher/blob/master/src/spi_flash_types.xml .
-Search this list for the device and get the "name" attribute.
-The following example shows the XML definition for the Winbond W25Q32 device:
-
-
-[source,xml,numbered]
-.Position of the name attribute in the XML definition
------------------------------------------------------------------------------
-        <SerialFlash name="W25Q32<1>" size="4194304" clock="80000">
-                <Description>Winbond W25Q32</Description>
-                <Note></Note>
-                <Layout pageSize="256"
-                        sectorPages="16"
-                        mode="linear" />
------------------------------------------------------------------------------
-
-<1> The name attribute of the device
-
-In this case the expected ID would be +"W25Q32"+.
-
+TODO...
