@@ -2,17 +2,17 @@
 
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
 	<info organisation="org.muhkuh.tests"
-	      module="spi_flash"
+	      module="parallel_flash"
 	      revision="${PROJECT_VERSION}"
 	      e:vcs-id="${PROJECT_VERSION_VCS}">
 		<license name="GPL-2.0"/>
 		<ivyauthor name="Muhkuh team" url="https://github.com/muhkuh-sys" />
-		<description>This test case identified an SPI flash and optionally writes data to it.</description>
+		<description>This test case identified a parallel NOR flash and optionally writes data to it.</description>
 	</info>
 	<publications>
 		<artifact ext="zip" type="zip" packaging="zip" />
 	</publications>
 	<dependencies>
-		<dependency org="org.muhkuh.tools" name="flasher" rev="1.1.1"/>
+		<dependency org="org.muhkuh.tools" name="flasher" rev="1.2.0"/>
 	</dependencies>
 </ivy-module>

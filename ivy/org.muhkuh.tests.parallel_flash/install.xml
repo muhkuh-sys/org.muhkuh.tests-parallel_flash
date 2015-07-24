@@ -1,6 +1,6 @@
-<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:if="ant:if" name="spi_flash" default="install">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:if="ant:if" name="parallel_flash" default="install">
 	<target name="install_testcase" description="install the test case">
-		<echo>org.muhkuh.tests.spi_flash</echo>
+		<echo>org.muhkuh.tests.parallel_flash</echo>
 		
 		<copy todir="${install.documentation}" includeEmptyDirs="true">
 			<fileset dir="doc" />

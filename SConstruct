@@ -59,7 +59,7 @@ aAttribs.update(dict({
 	'toclevels': 4
 }))
 
-doc = env_default.Asciidoc('targets/doc/org.muhkuh.tests.spi_flash.html', 'README.asciidoc', ASCIIDOC_BACKEND='html5', ASCIIDOC_ATTRIBUTES=aAttribs)
+doc = env_default.Asciidoc('targets/doc/org.muhkuh.tests.parallel_flash.html', 'README.asciidoc', ASCIIDOC_BACKEND='html5', ASCIIDOC_ATTRIBUTES=aAttribs)
 
 
 #----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ doc = env_default.Asciidoc('targets/doc/org.muhkuh.tests.spi_flash.html', 'READM
 
 aArtifactServer = ('nexus@netx01', 'muhkuh', 'muhkuh_snapshots')
 strArtifactGroup = 'tests.muhkuh.org'
-strArtifactId = 'spi_flash'
+strArtifactId = 'parallel_flash'
 
 
 tArcList0 = env_default.ArchiveList('zip')
