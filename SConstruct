@@ -75,7 +75,7 @@ strArtifactId = 'parallel_flash'
 tArcList0 = env_default.ArchiveList('zip')
 
 tArcList0.AddFiles('',
-	'ivy/org.muhkuh.tests.spi_flash/install.xml')
+	'ivy/org.muhkuh.tests.parallel_flash/install.xml')
 
 tArcList0.AddFiles('doc/',
 	doc)
@@ -90,6 +90,7 @@ aArtifactGroupReverse.reverse()
 strArtifactPath = 'targets/ivy/repository/%s/%s/%s' % ('/'.join(aArtifactGroupReverse),strArtifactId,PROJECT_VERSION)
 tArc = env_default.Archive(os.path.join(strArtifactPath, '%s-%s.zip' % (strArtifactId,PROJECT_VERSION)), None, ARCHIVE_CONTENTS=tArcList0)
 tIvy = env_default.Version(os.path.join(strArtifactPath, 'ivy-%s.xml' % PROJECT_VERSION), 'ivy/%s.%s/ivy.xml' % ('.'.join(aArtifactGroupReverse),strArtifactId))
+tPom = env_default.ArtifactVersion(os.path.join(strArtifactPath, '%s-%s.pom' % (strArtifactId,PROJECT_VERSION)), 'ivy/%s.%s/pom.xml' % ('.'.join(aArtifactGroupReverse),strArtifactId))
 
 env_default.AddArtifact(tArc, aArtifactServer, strArtifactGroup, strArtifactId, PROJECT_VERSION, 'zip')
 env_default.AddArtifact(tIvy, aArtifactServer, strArtifactGroup, strArtifactId, PROJECT_VERSION, 'ivy')
