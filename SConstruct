@@ -59,7 +59,7 @@ aAttribs.update(dict({
 	'toclevels': 4
 }))
 
-doc = env_default.Asciidoc('targets/doc/org.muhkuh.tests.parallel_flash.html', 'README.asciidoc', ASCIIDOC_BACKEND='html5', ASCIIDOC_ATTRIBUTES=aAttribs)
+doc = env_default.Asciidoc('targets/doc/org.muhkuh.tests.parallel_flash.html', 'doc/org.muhkuh.tests-parallel_flash.asciidoc', ASCIIDOC_BACKEND='html5', ASCIIDOC_ATTRIBUTES=aAttribs)
 
 
 #----------------------------------------------------------------------------
