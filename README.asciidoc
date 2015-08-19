@@ -1,0 +1,27 @@
+flasher
+=======
+
+== Status
+
+TravisCI: image:https://travis-ci.org/muhkuh-sys/org.muhkuh.tests-parallel_flash.svg?branch=master["TravisCI build status", link="https://travis-ci.org/muhkuh-sys/org.muhkuh.tests-parallel_flash"]
+
+
+== About
+
+This document describes the "Parallel Flash identify" test for the Muhkuh test framework. It identifies a connected parallel NOR flash with the "flasher" tool and optionally writes a file to the flash.
+
+
+== Infrastructure
+
+This chapter describes the current infrastructure of the project.
+
+The source code is hosted on GitHub: https://github.com/muhkuh-sys/org.muhkuh.tests-parallel_flash
+
+Issues are collected here: https://github.com/muhkuh-sys/org.muhkuh.tests-parallel_flash/issues
+
+Each push to the GitHub repository triggers a build on TravisCI using a Ubuntu 12.04 64bit VM: https://travis-ci.org/muhkuh-sys/org.muhkuh.tests-parallel_flash .
+
+The build results from TravisCI are copied after auccess to Bintray: https://bintray.com/muhkuh/Muhkuh/parallel_flash/view
+Please note that this is done for each build, and not only tagged ones.
+
+Build results from a tag are released on GitHub: https://github.com/muhkuh-sys/org.muhkuh.tests-parallel_flash/releases
