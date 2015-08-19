@@ -27,9 +27,9 @@ The test can optionally write a file to the flash after a successful identify. T
 == Parameters
 
 +unit+::
-  Specify the index of the SPI unit where the SPI flash is connected. Please see the chapter <<Unit_and_Chip_select>> for details.
+  Specify the index of the unit where the parallel flash is connected. Please see the chapter <<Unit_and_Chip_select>> for details.
 +chipselect+::
-  Specify the index of the chip select where the SPI flash is connected. Please see the chapter <<Unit_and_Chip_select>> for details.
+  Specify the index of the chip select where the parallel flash is connected. Please see the chapter <<Unit_and_Chip_select>> for details.
 +data_file+::
   The path to the file which should be flashed after a successful identify.
 +offset+::
